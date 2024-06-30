@@ -13,6 +13,9 @@ func main() {
 	loadEnvironment()
 
 	engine := html.New("./views", ".html")
+	engine.Reload(true)
+	engine.Debug(true)
+
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
@@ -27,8 +30,18 @@ func main() {
 }
 
 func startServer(app *fiber.App) {
-	port := os.Getenv("PORT")
+	port := getPort()
 	log.Fatal(app.Listen(port))
+}
+
+func getPort() string {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = ":3000"
+	} else {
+		port = ":" + port
+	}
+	return port
 }
 
 func loadEnvironment() {
