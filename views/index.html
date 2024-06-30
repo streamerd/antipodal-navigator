@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D World Map - Antipodal Points</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id='map'></div>
+    <script>
+    mapboxgl.accessToken = '{{.MapboxToken}}';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/satellite-v9',
+        center: [0, 0],
+        zoom: 0.5,
+        projection: 'globe'
+    });
+
+    map.on('style.load', () => {
+        map.setFog({});
+    });
+
+    function antipodalCoordinates(lat, lon) {
+        const antipodalLat = -lat;
+        let antipodalLon = lon > 0 ? lon - 180 : lon + 180;
+        if (antipodalLon > 180) antipodalLon -= 360;
+        else if (antipodalLon <= -180) antipodalLon += 360;
+        return [antipodalLon, antipodalLat];
+    }
+
+    map.on('click', (e) => {
+        const [lon, lat] = e.lngLat.toArray();
+        const [antipodalLon, antipodalLat] = antipodalCoordinates(lat, lon);
+        
+        map.flyTo({
+            center: [antipodalLon, antipodalLat],
+            essential: true,
+            duration: 5000
+        });
+    });
+    </script>
+</body>
+</html>
