@@ -9,19 +9,32 @@
     <style>
         body { margin: 0; padding: 0; }
         #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
     <div id='map'></div>
+    <div id='info'>Click on the map to see antipodal point</div>
     <script>
     mapboxgl.accessToken = '{{.MapboxToken}}';
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/satellite-v9',
         center: [0, 0],
-        zoom: 0.5,
+        zoom: 1.5,
         projection: 'globe'
     });
+
+    const infoDiv = document.getElementById('info');
 
     map.on('style.load', () => {
         map.setFog({});
@@ -39,11 +52,23 @@
         const [lon, lat] = e.lngLat.toArray();
         const [antipodalLon, antipodalLat] = antipodalCoordinates(lat, lon);
         
+        infoDiv.innerHTML = `
+            Starting point: ${lat.toFixed(4)}, ${lon.toFixed(4)}<br>
+            Flying to antipodal point...
+        `;
+
         map.flyTo({
             center: [antipodalLon, antipodalLat],
             essential: true,
             duration: 5000
         });
+
+        setTimeout(() => {
+            infoDiv.innerHTML = `
+                Starting point: ${lat.toFixed(4)}, ${lon.toFixed(4)}<br>
+                Antipodal point: ${antipodalLat.toFixed(4)}, ${antipodalLon.toFixed(4)}
+            `;
+        }, 5000);
     });
     </script>
 </body>
