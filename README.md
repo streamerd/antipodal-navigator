@@ -4,6 +4,10 @@ This application allows users to explore antipodal points on a 3D globe using Ma
 
 Inspired by Neil deGrasse Tyson's explanation of antipodal points: [Startalk Short Video](https://www.youtube.com/shorts/HJwZoQq0-a0)
 
+
+[![Antipodal Points Navigator](https://img.youtube.com/vi/W1R4Xj2NvTA/0.jpg)](https://www.youtube.com/watch?v=W1R4Xj2NvTA)
+
+
 ## What are Antipodal Points?
 
 Antipodal points are two points on a sphere that are diametrically opposite to each other. On Earth, they are sometimes referred to as antipodes. If you were to draw a straight line from one point through the center of the Earth, it would emerge at the antipodal point.
